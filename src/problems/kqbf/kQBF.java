@@ -120,7 +120,7 @@ public class kQBF implements Evaluator<Integer> {
 	}
 
 	/**
-	 * Evaluates a QBF by calculating the matrix multiplication that defines the
+	 * Evaluates a kQBF by calculating the matrix multiplication that defines the
 	 * QBF: f(x) = x'.A.x .
 	 * 
 	 * @return The value of the kQBF.
@@ -143,7 +143,11 @@ public class kQBF implements Evaluator<Integer> {
 		for (int i = 0; i < size; i++) {
 			capacity += variables[i] == 1.0 ? weights[i] : 0;
 		}
-		sol.usedCapacity = capacity;
+		sol.usedCapacity = capacity;	
+		
+		if(sol.usedCapacity > this.capacity){
+			sum = Double.NEGATIVE_INFINITY;
+		}
 
 		return sum;
 

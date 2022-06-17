@@ -12,9 +12,7 @@ import solutions.Solution;
  * 
  * @author ccavellucci, fusberti
  */
-public class GA_kQBF extends AbstractGA<Integer, Integer> {
-
-	// public kQBF kQBF;
+public class GA_kQBF extends AbstractGA<Integer, Integer> {		
 
 	/**
 	 * Constructor for the GA_QBF class. The QBF objective function is passed as
@@ -32,8 +30,8 @@ public class GA_kQBF extends AbstractGA<Integer, Integer> {
 	 * @throws IOException
 	 *             Necessary for I/O operations.
 	 */
-	public GA_kQBF(Integer generations, Integer popSize, Double mutationRate, String filename) throws IOException {
-		super(new kQBF(filename), generations, popSize, mutationRate);			
+	public GA_kQBF(Integer generations, Integer popSize, Double mutationRate, Double maxMutationRate, Boolean uniformCross, String filename) throws IOException {
+		super(new kQBF(filename), generations, popSize, mutationRate, maxMutationRate, uniformCross);		
 	}
 
 	/**
@@ -101,18 +99,17 @@ public class GA_kQBF extends AbstractGA<Integer, Integer> {
 	 */
 	protected Chromosome getBestChromosome(Population population) {	
 
+		
 		double bestFitness = Double.NEGATIVE_INFINITY;
 		Chromosome bestChromosome = null;
 		for (Chromosome c : population) {			
-			Solution<Integer> fitness = fitness(c);
-			double usedCapacity = fitness.usedCapacity;
+			Solution<Integer> fitness = fitness(c);			
 
-			if (fitness.cost > bestFitness && usedCapacity < ObjFunction.getCapacity()) {
-			// if (fitness.cost > bestFitness) {
+			if (fitness.cost >= bestFitness) {			
 				bestFitness = fitness.cost;
 				bestChromosome = c;
 			}
-		}
+		}		
 
 		return bestChromosome;
 	}
@@ -145,12 +142,14 @@ public class GA_kQBF extends AbstractGA<Integer, Integer> {
 	 * A main method used for testing the GA metaheuristic.
 	 * 
 	 */
-	public static void main(String[] args) throws IOException {
-
-		// kQBF kQBF = new kQBF("instances/kqbf/kqbf040");
-
+	public static void main(String[] args) throws IOException {	
 		long startTime = System.currentTimeMillis();
-		GA_kQBF ga = new GA_kQBF(1000, 100, 1.0 / 100.0, "instances/kqbf/kqbf060");
+		GA_kQBF ga = new GA_kQBF(1000, 
+								50,
+								0.01,
+								0.01,
+								false,
+								"instances/kqbf/kqbf060");
 		Solution<Integer> bestSol = ga.solve();
 		System.out.println("maxVal = " + bestSol);
 		long endTime = System.currentTimeMillis();
