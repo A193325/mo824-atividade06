@@ -164,7 +164,7 @@ public abstract class AbstractGA<G extends Number, F> {
 	 * 
 	 * @return The best feasible solution obtained throughout all iterations.
 	 */
-	public Solution<F> solve() {
+	public Solution<F> solve(long startTime) {
 
 		/* starts the initial population */
 		Population population = initializePopulation();
@@ -181,6 +181,11 @@ public abstract class AbstractGA<G extends Number, F> {
 		 */
 		for (int g = 1; g <= generations; g++) {
 			System.out.print(".");
+
+			if((System.currentTimeMillis() - startTime)/(double) 1000 > 1800){
+				break;
+			}
+
 			Population parents = selectParents(population);
 
 			Population offsprings = (uniformCross) ? uniformCrossover(parents) : crossover(parents) ;
@@ -200,17 +205,18 @@ public abstract class AbstractGA<G extends Number, F> {
 				mutRate = mutationRate;
 				iterations = 0;
 				if (verbose)
+					System.out.println(".");
 					System.out.println("(Gen. " + g + ") BestSol = " + bestSol);					
 			}else{
 				iterations++;
 				if(iterations > generations*0.025 && mutRate < maxMutationRate){
 					mutRate = mutRate*1.2;
 					iterations = 0;	
+					System.out.println(".");
 					System.out.println("MutRate: " + mutRate);									
 				}
 			}	
-		}
-		System.out.println(".");
+		}		
 		return bestSol;
 	}
 

@@ -83,7 +83,7 @@ public class GA_kQBF extends AbstractGA<Integer, Integer> {
 		Chromosome chromosome = new Chromosome();
 		for (int i = 0; i < chromosomeSize; i++) {
 			chromosome.add(rng.nextInt(2));
-		}
+		}			
 
 		return chromosome;
 	}
@@ -144,14 +144,9 @@ public class GA_kQBF extends AbstractGA<Integer, Integer> {
 	 */
 	public static void main(String[] args) throws IOException {	
 		long startTime = System.currentTimeMillis();
-		GA_kQBF ga = new GA_kQBF(1000, 
-								50,
-								0.01,
-								0.01,
-								false,
-								"instances/kqbf/kqbf060");
-		Solution<Integer> bestSol = ga.solve();
-		System.out.println("maxVal = " + bestSol);
+		GA_kQBF ga = new GA_kQBF(5000, 100, 0.1, 0.1, true, "instances/kqbf/kqbf100");
+		Solution<Integer> bestSol = ga.solve(startTime);
+		System.out.println("maxVal = " + bestSol);		
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("Time = " + (double) totalTime / (double) 1000 + " seg");
